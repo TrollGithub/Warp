@@ -1,0 +1,8 @@
+config.env
+log.txt
+docker-compose.yml
+*auth_token.txt
+*.pyc
+data*
+.vscode
+.idea

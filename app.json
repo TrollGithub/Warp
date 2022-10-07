@@ -1,0 +1,99 @@
+{
+    "name": "Warp+ Injector",
+    "description": "Get Unlimited Warp+ Data",
+    "logo": "https://avatars.githubusercontent.com/u/107493332?v=4",
+    "keywords": ["Warp","Cloudflare"],
+    "repository": "https://github.com/StuffUser/Warp",
+    "success_url": "",
+    "stack": "container",
+    "env": {
+        "BOT_TOKEN": {
+            "description": "Telegram bot token got, from @BotFather",
+            "value": ""
+        },
+        "OWNER_ID": {
+            "description": "You telegram ID, got from @MissRose_bot",
+            "value": ""
+        },
+        "SEND_LOG": {
+            "description": "Send logs to Channel",
+            "value": "False",
+            "required": false
+        },
+        "CHANNEL_ID": {
+            "description": "Put the channel ID for logs e.g -123456789",
+            "value": "",
+            "required": false
+        },
+        "HIDE_ID": {
+            "description": "Set True/False",
+            "value": "False",
+            "required": false
+        },
+        "TIME_ZONE": {
+            "description": "Your time and zone location",
+            "value": "Asia/Jakarta",
+            "required": false
+        },
+        "PICS_WARP": {
+            "description": "Custom pic, separated by space",
+            "value": "https://telegra.ph/file/f6d61498449f00b746aba.png https://telegra.ph/file/eeec153170e89e8aa42f9.png https://telegra.ph/file/56be1d4ed6abb49289bf9.png https://telegra.ph/file/0f34880fd920c914dad7d.png https://telegra.ph/file/417c202984dada6a2f2ad.png",
+            "required": false
+        },
+        "COOLDOWN": {
+            "description": "Set cooldown, minimum 20 seconds",
+            "value": "20",
+            "required": false
+        },
+        "TASK_MAX": {
+            "description": "Max task running, maximum 5 task",
+            "value": "5",
+            "required": false
+        },
+        "PROG_FINISH": {
+            "description": "Custom finish brogress bar",
+            "value": "⬢",
+            "required": false
+        },
+        "PROG_UNFINISH": {
+            "description": "Custom unfinish brogress bar",
+            "value": "⬡",
+            "required": false
+        },
+        "START_CMD": {
+            "description": "Custom start command",
+            "value": "start",
+            "required": false
+        },
+        "STATS_CMD": {
+            "description": "Custom stats command",
+            "value": "stats",
+            "required": false
+        },
+        "LOG_CMD": {
+            "description": "Custom log command",
+            "value": "log",
+            "required": false
+        },
+        "RESTART_CMD": {
+            "description": "Custom restart command",
+            "value": "restart",
+            "required": false
+        },
+        "UPSTREAM_REPO": {
+            "description": "Upstream repo url for update",
+            "value": "https://github.com/StuffUser/Warp",
+            "required": false
+        },
+        "UPSTREAM_BRANCH": {
+            "description": "Upstream repo branch",
+            "value": "master",
+            "required": false
+        },
+        "UPDATE_EVERYTHING": {
+            "description": "Set True/False to keep everything update when restart",
+            "value": "True",
+            "required": false
+        }
+    }
+}
