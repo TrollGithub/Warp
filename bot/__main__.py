@@ -103,7 +103,7 @@ def warp_run(bot, warp_id, wrap_msg):
 def stats(update, context):
     last_commit = check_output(["git log -1 --date=short --pretty=format:'%cd\n<b>├ Commit Change:</b> %cr'"],
                                shell=True).decode() if ospath.exists('.git') else 'No UPSTREAM_REPO'
-    stats = f''''
+    stats = f'''
 <b>UPSTREAM AND BOT STATUS</b>
 <b>┌ Commit Date:</b> {last_commit}
 <b>├ Bot Uptime:</b> {get_readable_time(time() - botStartTime)}
