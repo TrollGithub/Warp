@@ -1,5 +1,6 @@
 from datetime import datetime as dt
 from os import path as ospath, remove as osremove, execl as osexecl
+from platform import system, architecture, release
 from psutil import disk_usage, cpu_percent, swap_memory, cpu_count, virtual_memory, net_io_counters, boot_time
 from pytz import UTC
 from subprocess import check_output, run as srun
@@ -102,26 +103,29 @@ def warp_run(bot, warp_id, wrap_msg):
 def stats(update, context):
     last_commit = check_output(["git log -1 --date=short --pretty=format:'%cd\n<b>├ Commit Change:</b> %cr'"],
                                shell=True).decode() if ospath.exists('.git') else 'No UPSTREAM_REPO'
-    stats = f'<b>UPSTREAM AND BOT STATUS</b>\n'\
-            f'<b>┌ Commit Date:</b> {last_commit}\n'\
-            f'<b>├ Bot Uptime:</b> {get_readable_time(time() - botStartTime)}\n'\
-            f'<b>└ OS Uptime:</b> {get_readable_time(time() - boot_time())}\n\n'\
-            f'<b>SYSTEM STATUS</b>\n'\
-            f'<b>┌ SWAP:</b> {get_readable_file_size(swap_memory().total)}\n'\
-            f'<b>├ Total Cores:</b> {cpu_count(logical=True)}\n'\
-            f'<b>├ Physical Cores:</b> {cpu_count(logical=False)}\n'\
-            f'<b>├ Upload:</b> {get_readable_file_size(net_io_counters().bytes_sent)}\n'\
-            f'<b>├ Download:</b> {get_readable_file_size(net_io_counters().bytes_recv)}\n'\
-            f'<b>├ Disk Free:</b> {get_readable_file_size(disk_usage("/")[2])}\n'\
-            f'<b>├ Disk Used:</b> {get_readable_file_size(disk_usage("/")[1])}\n'\
-            f'<b>├ Disk Space:</b> {get_readable_file_size(disk_usage("/")[0])}\n'\
-            f'<b>├ Memory Free:</b> {get_readable_file_size(virtual_memory().available)}\n'\
-            f'<b>├ Memory Used:</b> {get_readable_file_size(virtual_memory().used)}\n'\
-            f'<b>├ Memory Total:</b> {get_readable_file_size(virtual_memory().total)}\n'\
-            f'<b>├ CPU:</b> {progress_bar(cpu_percent(interval=1))} {cpu_percent(interval=1)}%\n' \
-            f'<b>├ RAM:</b> {progress_bar(virtual_memory().percent)} {virtual_memory().percent}%\n' \
-            f'<b>├ DISK:</b> {progress_bar(disk_usage("/")[3])} {disk_usage("/")[3]}%\n' \
-            f'<b>└ SWAP:</b> {progress_bar(swap_memory().percent)} {swap_memory().percent}%'
+    stats = f''''
+<b>UPSTREAM AND BOT STATUS</b>
+<b>┌ Commit Date:</b> {last_commit}
+<b>├ Bot Uptime:</b> {get_readable_time(time() - botStartTime)}
+<b>└ OS Uptime:</b> {get_readable_time(time() - boot_time())}\n
+<b>SYSTEM STATUS</b>
+<b>┌ SWAP:</b> {get_readable_file_size(swap_memory().total)}
+<b>├ Total Cores:</b> {cpu_count(logical=True)}
+<b>├ Physical Cores:</b> {cpu_count(logical=False)}
+<b>├ Upload:</b> {get_readable_file_size(net_io_counters().bytes_sent)}
+<b>├ Download:</b> {get_readable_file_size(net_io_counters().bytes_recv)}
+<b>├ Disk Free:</b> {get_readable_file_size(disk_usage("/")[2])}
+<b>├ Disk Used:</b> {get_readable_file_size(disk_usage("/")[1])}
+<b>├ Disk Space:</b> {get_readable_file_size(disk_usage("/")[0])}
+<b>├ Memory Free:</b> {get_readable_file_size(virtual_memory().available)}
+<b>├ Memory Used:</b> {get_readable_file_size(virtual_memory().used)}
+<b>├ Memory Total:</b> {get_readable_file_size(virtual_memory().total)}
+<b>├ CPU:</b> {progress_bar(cpu_percent(interval=1))} {cpu_percent(interval=1)}%
+<b>├ RAM:</b> {progress_bar(virtual_memory().percent)} {virtual_memory().percent}%
+<b>├ DISK:</b> {progress_bar(disk_usage("/")[3])} {disk_usage("/")[3]}%
+<b>├ SWAP:</b> {progress_bar(swap_memory().percent)} {swap_memory().percent}%
+<b>└ OS:</b> {system()}, {architecture()[0]}, {release()}
+'''
     sendPhoto(stats, context.bot, update.message, PICS_STATS)
 
 
