@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/StuffUser/Warp">
-    <img src="https://i.postimg.cc/CL6SQn2Q/Warp.png">
+    <img src="https://telegra.ph/file/7a666bd4140f189486182.png">
   </a>
  </p>
 
