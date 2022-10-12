@@ -36,6 +36,7 @@ CHANNEL_ID = (environ.get("CHANNEL_ID", ""))
 CHANNEL_ID = int(CHANNEL_ID) if CHANNEL_ID else None
 SEND_LOG = environ.get("SEND_LOG", "false").lower() == "true"
 HIDE_ID = environ.get("HIDE_ID", "False").lower() == "true"
+PRIVATE_MODE = environ.get("PRIVATE_MODE", "True").lower() == "true"
 TIME_ZONE = environ.get("TIME_ZONE", "Asia/Jakarta")
 PICS_WARP = environ.get("PICS_WARP", "https://telegra.ph/file/f6d61498449f00b746aba.png https://telegra.ph/file/eeec153170e89e8aa42f9.png https://telegra.ph/file/56be1d4ed6abb49289bf9.png https://telegra.ph/file/0f34880fd920c914dad7d.png https://telegra.ph/file/417c202984dada6a2f2ad.png").split()
 PICS_STATS = environ.get("PICS_STATS", "https://i.postimg.cc/gjRYbVzZ/warp.png").split()

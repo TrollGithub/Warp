@@ -30,6 +30,11 @@
             "value": "False",
             "required": false
         },
+        "PRIVATE_MODE": {
+            "description": "Set True/False",
+            "value": "True",
+            "required": false
+        },
         "TIME_ZONE": {
             "description": "Your time and zone location",
             "value": "Asia/Jakarta",

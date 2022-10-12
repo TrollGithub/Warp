@@ -11,7 +11,7 @@ from threading import Thread
 from time import time, sleep
 
 from bot import LOG_CMD, RESTART_CMD, bot, botStartTime, dispatcher, updater, LOGGER, OWNER_ID, PICS_WARP, COOLDOWN, HIDE_ID, CHANNEL_ID, \
-                SEND_LOG, TASK_MAX, START_CMD, STATS_CMD, PICS_STATS, PROG_FINISH as F, PROG_UNFINISH as UF
+                SEND_LOG, TASK_MAX, START_CMD, STATS_CMD, PICS_STATS, PROG_FINISH as F, PROG_UNFINISH as UF, PRIVATE_MODE
 from bot.helpers.utils import callender, editPhoto, sendMessage, deleteMessage, sendPhoto, get_readable_time, \
                               get_readable_file_size, progress_bar
 from bot.helpers.warp_plus import run
@@ -101,6 +101,8 @@ def warp_run(bot, warp_id, wrap_msg):
 
 
 def stats(update, context):
+    if PRIVATE_MODE:
+        return sendMessage("<b>Upss...</b> mode privat aktif! Silahkan minta pemilik untuk akses publik", context.bot, update.message)
     last_commit = check_output(["git log -1 --date=short --pretty=format:'%cd\n<b>├ Commit Change:</b> %cr'"],
                                shell=True).decode() if ospath.exists('.git') else 'No UPSTREAM_REPO'
     stats = f'''
@@ -135,7 +137,7 @@ def start(update, context):
 
 def restart(update, context):
     if update.message.from_user.id != OWNER_ID:
-        return sendMessage("<b>Upss...</b> Mau ngapain?!", context.bot, update.message)
+        return sendMessage("<b>Upss...</b> Mau ngapain?! Khusus pemilik", context.bot, update.message)
     restart_message = sendMessage("<i>Memulai ulang...</i>", context.bot, update.message)
     srun(["python3", "update.py"])
     with open(".restartmsg", "w") as f:
@@ -146,17 +148,17 @@ def restart(update, context):
 
 def send_log(update, context):
     if update.message.from_user.id != OWNER_ID:
-        return sendMessage("<b>Upss...</b> Mau ngapain?!", context.bot, update.message)
+        return sendMessage("<b>Upss...</b> Mau ngapain?! Khusus pemilik", context.bot, update.message)
     update.message.reply_document(document=open("log.txt"))
 
 
 def warp_handler(update, context):
     global data
+    if PRIVATE_MODE:
+        return sendMessage("<b>Upss...</b> mode privat aktif! Solahkan minta pemilik untuk akses publik", context.bot, update.message)
     if data == TASK_MAX:
-        return sendMessage("Cuma bisa jalanin satu tugas aja...", context.bot, update.message)
+        return sendMessage(f"Cuma bisa jalanin {TASK_MAX} tugas aja...", context.bot, update.message)
     msg = update.message.text
-    if update.message.from_user.id != OWNER_ID:
-        return sendMessage("<b>Upss...</b> Ini bot pribadi!", context.bot, update.message)
     uname = f"<a href='https://t.me/{update.message.from_user.id}'>{update.message.from_user.first_name}</a>"
     if len(msg) != 36:
         return
