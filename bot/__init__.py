@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from faulthandler import enable as faulthandler_enable
-from logging import getLogger, FileHandler, StreamHandler, INFO, basicConfig, error as log_error, info as log_info, warning as log_warning
+from logging import getLogger, FileHandler, StreamHandler, basicConfig, INFO
 from os import environ, path as ospath
 from socket import setdefaulttimeout
 from telegram.ext import Updater as tgUpdater
@@ -22,6 +22,8 @@ LOGGER = getLogger(__name__)
 
 load_dotenv("config.env", override=True)
 
+warp_data = {}
+
 botStartTime = time()
 
 BOT_TOKEN = environ.get("BOT_TOKEN")
@@ -38,6 +40,7 @@ SEND_LOG = environ.get("SEND_LOG", "false").lower() == "true"
 HIDE_ID = environ.get("HIDE_ID", "False").lower() == "true"
 PRIVATE_MODE = environ.get("PRIVATE_MODE", "True").lower() == "true"
 TIME_ZONE = environ.get("TIME_ZONE", "Asia/Jakarta")
+TIME_ZONE_TITLE = environ.get("TIME_ZONE_TITLE", "UTC+7")
 PICS_WARP = environ.get("PICS_WARP", "https://telegra.ph/file/f6d61498449f00b746aba.png https://telegra.ph/file/eeec153170e89e8aa42f9.png https://telegra.ph/file/56be1d4ed6abb49289bf9.png https://telegra.ph/file/0f34880fd920c914dad7d.png https://telegra.ph/file/417c202984dada6a2f2ad.png").split()
 PICS_STATS = environ.get("PICS_STATS", "https://i.postimg.cc/gjRYbVzZ/warp.png").split()
 COOLDOWN = int(environ.get("COOLDOWN", 20))

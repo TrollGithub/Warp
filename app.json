@@ -40,6 +40,11 @@
             "value": "Asia/Jakarta",
             "required": false
         },
+        "TIME_ZONE_TITLE": {
+            "description": "Your timezone title",
+            "value": "UTC+7",
+            "required": false
+        },
         "PICS_WARP": {
             "description": "Custom pic, separated by space",
             "value": "https://telegra.ph/file/f6d61498449f00b746aba.png https://telegra.ph/file/eeec153170e89e8aa42f9.png https://telegra.ph/file/56be1d4ed6abb49289bf9.png https://telegra.ph/file/0f34880fd920c914dad7d.png https://telegra.ph/file/417c202984dada6a2f2ad.png",
@@ -51,7 +56,7 @@
             "required": false
         },
         "TASK_MAX": {
-            "description": "Max task running, maximum 5 task",
+            "description": "Set max task, to disable set value to -1",
             "value": "5",
             "required": false
         },
