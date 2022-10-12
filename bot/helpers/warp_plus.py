@@ -97,7 +97,7 @@ def warp_run(bot, user_id, warp_id, wrap_msg):
                 caption = "<b>WARP+ INJECTOR</b>\n"
                 if not HIDE_ID:
                     caption += f"<code>{warp_id}</code>\n"
-                caption += f"<b>┌ Cooldown:</b> {i} detik...\n"
+                caption += f"<b>┌ Cooldown:</b> {i} seconds...\n"
                 caption += f"<b>├ Progress:</b> 0%\n"
                 caption += msg_log
                 if not warp_dict.get('run_warp'):
@@ -112,7 +112,7 @@ def warp_run(bot, user_id, warp_id, wrap_msg):
                 caption = "<b>WARP+ INJECTOR</b>\n"
                 if not HIDE_ID:
                     caption += f"<code>{warp_id}</code>\n"
-                caption += f"<b>┌ Cooldown:</b> {i} detik...\n"
+                caption += f"<b>┌ Cooldown:</b> {i} seconds...\n"
                 caption += f"<b>├ Progress:</b> 0%\n"
                 caption += msg_log
                 if not warp_dict.get('run_warp'):

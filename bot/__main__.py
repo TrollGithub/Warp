@@ -95,7 +95,7 @@ def warp_handler(update, context):
 
 def stop_query(update, context):
     query = update.callback_query
-    user_id = query.message.reply_to_message.from_user.id
+    user_id = query.from_user.id
     if user_id != int(query.data) or user_id != OWNER_ID: # Future for group support
         return query.answer(text="Not Your Task!", show_alert=True)
     else:
