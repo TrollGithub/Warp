@@ -82,7 +82,7 @@ def warp_handler(update, context):
     global task_run
     user_id = update.message.from_user.id
     warp_dict = get_data()
-    if warp_dict and warp_dict.get("private_mode"):
+    if warp_dict and warp_dict.get("private_mode") and user_id != OWNER_ID:
         return sendMessage("<b>Upss...</b> private mode active! Contact the owner to make it public access!", context.bot, update.message)
     msg = update.message.text
     warp_dict = warp_data.get(user_id, False)
