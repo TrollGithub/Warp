@@ -18,10 +18,6 @@ task_run = 0
 
 
 def start(update, context):
-    user_id = update.message.from_user.id
-    warp_dict = get_data()
-    if warp_dict and warp_dict.get("private_mode") and user_id != OWNER_ID:
-        return sendMessage("<b>Upss...</b> private mode active! Contact the owner to make it public access!", context.bot, update.message)
     sendMessage("This is <b>Warp+ Injector</b>. Just send your id here...", context.bot, update.message)
 
 def stats(update, context):
