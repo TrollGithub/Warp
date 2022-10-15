@@ -18,17 +18,16 @@ task_run = 0
 
 
 def start(update, context):
+    user_id = update.message.from_user.id
     warp_dict = get_data()
-    if warp_dict and warp_dict.get("private_mode"):
+    if warp_dict and warp_dict.get("private_mode") and user_id != OWNER_ID:
         return sendMessage("<b>Upss...</b> private mode active! Contact the owner to make it public access!", context.bot, update.message)
     sendMessage("This is <b>Warp+ Injector</b>. Just send your id here...", context.bot, update.message)
 
 def stats(update, context):
-    with open(".mode.txt", "r") as file:
-        file = file.read()
-        update_warp_data(OWNER_ID, "private_mode", file if file == "True" else False)
-    warp_dict = warp_data.get(OWNER_ID, False)
-    if warp_dict and warp_dict.get("private_mode"):
+    user_id = update.message.from_user.id
+    warp_dict = get_data()
+    if warp_dict and warp_dict.get("private_mode") and user_id != OWNER_ID:
         return sendMessage("<b>Upss...</b> private mode active! Contact the owner to make it public access!", context.bot, update.message)
     last_commit = check_output(["git log -1 --date=short --pretty=format:'%cd\n<b>├ Commit Change:</b> %cr'"],
                                shell=True).decode() if ospath.exists('.git') else 'No UPSTREAM_REPO'
@@ -85,11 +84,11 @@ def mode(update, context):
 
 def warp_handler(update, context):
     global task_run
+    user_id = update.message.from_user.id
     warp_dict = get_data()
     if warp_dict and warp_dict.get("private_mode"):
         return sendMessage("<b>Upss...</b> private mode active! Contact the owner to make it public access!", context.bot, update.message)
     msg = update.message.text
-    user_id = update.message.from_user.id
     warp_dict = warp_data.get(user_id, False)
     if warp_dict and warp_dict.get("run_warp"):
             return sendMessage(f"Ups, you can only add 1 task!", context.bot, update.message)
