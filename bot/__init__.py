@@ -10,6 +10,11 @@ if ospath.exists('log.txt'):
     with open('log.txt', 'r+') as f:
         f.truncate(0)
 
+if not ospath.exists('.mode.txt'):
+    with open('.mode.txt', 'w') as f:
+        f.write("True")
+    
+
 faulthandler_enable()
 
 setdefaulttimeout(600)
@@ -38,11 +43,12 @@ CHANNEL_ID = (environ.get("CHANNEL_ID", ""))
 CHANNEL_ID = int(CHANNEL_ID) if CHANNEL_ID else None
 SEND_LOG = environ.get("SEND_LOG", "false").lower() == "true"
 HIDE_ID = environ.get("HIDE_ID", "False").lower() == "true"
-PRIVATE_MODE = environ.get("PRIVATE_MODE", "True").lower() == "true"
 TIME_ZONE = environ.get("TIME_ZONE", "Asia/Jakarta")
 TIME_ZONE_TITLE = environ.get("TIME_ZONE_TITLE", "UTC+7")
 PICS_WARP = environ.get("PICS_WARP", "https://telegra.ph/file/f6d61498449f00b746aba.png https://telegra.ph/file/eeec153170e89e8aa42f9.png https://telegra.ph/file/56be1d4ed6abb49289bf9.png https://telegra.ph/file/0f34880fd920c914dad7d.png https://telegra.ph/file/417c202984dada6a2f2ad.png").split()
 PICS_STATS = environ.get("PICS_STATS", "https://i.postimg.cc/gjRYbVzZ/warp.png").split()
+PIC_OFF = environ.get('PIC_OFF', 'https://i.postimg.cc/Gmn3YmnW/Off.png')
+PIC_ON = environ.get('PIC_ON', 'https://i.postimg.cc/WzK3xGKz/On.png')
 COOLDOWN = int(environ.get("COOLDOWN", 20))
 TASK_MAX = int(environ.get("TASK_MAX", 5))
 PROG_FINISH = environ.get("PROG_FINISH", "⬢")
@@ -51,6 +57,7 @@ START_CMD = environ.get("START_CMD", "start")
 STATS_CMD = environ.get("STATS_CMD", "stats")
 RESTART_CMD = environ.get("RESTART_CMD", "restart")
 LOG_CMD = environ.get("LOG_CMD", "log")
+MODE_CMD = environ.get("MODE_CMD", "mode")
 
 updater = tgUpdater(token=BOT_TOKEN, request_kwargs={'read_timeout': 20, 'connect_timeout': 15})
 bot = updater.bot

@@ -1,8 +1,8 @@
 from pytz import timezone as tzone
 from random import choice
-from telegram import InputMediaPhoto
+from telegram import InputMediaPhoto, InlineKeyboardButton, InlineKeyboardMarkup
 
-from bot import warp_data, LOGGER, PROG_UNFINISH, TIME_ZONE, PROG_FINISH, PROG_UNFINISH
+from bot import warp_data, LOGGER, PROG_UNFINISH, TIME_ZONE, PROG_FINISH, PROG_UNFINISH, OWNER_ID
 
 
 SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
@@ -51,6 +51,15 @@ def progress_bar(percentage):
     except:
         percentage = 0
     return ''.join(PROG_FINISH if i <= percentage // 10 else PROG_UNFINISH for i in range(1, 11))
+
+def get_button(text, key, user_id=None):
+    return InlineKeyboardMarkup([[InlineKeyboardButton(text=text, callback_data=f"{user_id if user_id else OWNER_ID} {key}")]])
+
+def get_data():
+    with open(".mode.txt", "r") as file:
+        file = file.read()
+        update_warp_data(OWNER_ID, "private_mode", file if file == "True" else False)
+    return warp_data.get(OWNER_ID, False)
 
 def callender(dtime):
     dt_date = dtime.astimezone(tzone(TIME_ZONE)).strftime('%B %d, %Y')

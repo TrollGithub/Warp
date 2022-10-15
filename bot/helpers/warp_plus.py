@@ -6,11 +6,10 @@ import urllib.request
 
 from datetime import datetime as dt
 from pytz import UTC
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from time import time, sleep
 
 from bot import warp_data, COOLDOWN, LOGGER, HIDE_ID, CHANNEL_ID, PROG_FINISH, PROG_UNFINISH, SEND_LOG, PICS_WARP, TIME_ZONE_TITLE
-from bot.helpers.utils import callender, editPhoto, get_readable_time, get_readable_file_size
+from bot.helpers.utils import callender, editPhoto, get_readable_time, get_readable_file_size, get_button
 
 
 LOGGER.info("WARP+ Cloudflare")
@@ -60,7 +59,7 @@ def warp_run(bot, user_id, warp_id, wrap_msg):
     b = 0
     bw = 0
     start_time = time()
-    button = [[InlineKeyboardButton(text="Stop", callback_data=user_id)]]
+    button = get_button("Stop", "stop", user_id)
     while True:
         warp_dict = warp_data.get(user_id, False)
         date_add, time_added = callender(dt.now(tz=UTC))
@@ -85,7 +84,7 @@ def warp_run(bot, user_id, warp_id, wrap_msg):
             if not warp_dict.get('run_warp'):
                 break
             else:
-                editPhoto(caption, bot, wrap_msg, PICS_WARP, InlineKeyboardMarkup(button))
+                editPhoto(caption, bot, wrap_msg, PICS_WARP, button)
                 sleep(3)
         result = run(warp_id)
         if result == 200:
@@ -103,7 +102,7 @@ def warp_run(bot, user_id, warp_id, wrap_msg):
                 if not warp_dict.get('run_warp'):
                     break
                 else:
-                    editPhoto(caption, bot, wrap_msg, PICS_WARP, InlineKeyboardMarkup(button))
+                    editPhoto(caption, bot, wrap_msg, PICS_WARP, button)
                     sleep(5)
         else:
             b += 1
@@ -118,7 +117,7 @@ def warp_run(bot, user_id, warp_id, wrap_msg):
                 if not warp_dict.get('run_warp'):
                     break
                 else:
-                    editPhoto(caption, bot, wrap_msg, PICS_WARP, InlineKeyboardMarkup(button))
+                    editPhoto(caption, bot, wrap_msg, PICS_WARP, button)
                     sleep(5)
         if not warp_dict.get('run_warp'):
             LOGGER.info(f"Task stopped!: {warp_id}")

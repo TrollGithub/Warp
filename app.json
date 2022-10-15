@@ -30,11 +30,6 @@
             "value": "False",
             "required": false
         },
-        "PRIVATE_MODE": {
-            "description": "Set True/False",
-            "value": "True",
-            "required": false
-        },
         "TIME_ZONE": {
             "description": "Your time and zone location",
             "value": "Asia/Jakarta",
@@ -83,6 +78,11 @@
         "LOG_CMD": {
             "description": "Custom log command",
             "value": "log",
+            "required": false
+        },
+        "MODE_CMD": {
+            "description": "Custom mode command",
+            "value": "mode",
             "required": false
         },
         "RESTART_CMD": {

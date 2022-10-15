@@ -27,6 +27,7 @@ start - Ceck keadaan bot (idup/tewas)
 stats - Cek bot system
 log - Cek log bot
 restart - Mulai ulang bot
+mode - Switch mode private/public access
 ``` 
 
 ##### *<i>Bot untuk penggunaan pribadi</i>

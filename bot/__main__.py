@@ -7,10 +7,10 @@ from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackQueryH
 from threading import Thread
 from time import time, sleep
 
-from bot import bot, botStartTime, dispatcher, updater, warp_data, LOG_CMD, RESTART_CMD, LOGGER, OWNER_ID, PICS_WARP, COOLDOWN, \
-                TASK_MAX, START_CMD, STATS_CMD, PICS_STATS, PRIVATE_MODE
-from bot.helpers.utils import sendMessage, deleteMessage, sendPhoto, get_readable_time, \
-                              get_readable_file_size, progress_bar, update_warp_data
+from bot import MODE_CMD, PIC_OFF, PIC_ON, bot, botStartTime, dispatcher, updater, warp_data, LOG_CMD, RESTART_CMD, LOGGER, OWNER_ID, PICS_WARP, COOLDOWN, \
+                TASK_MAX, START_CMD, STATS_CMD, PICS_STATS
+from bot.helpers.utils import editPhoto, sendMessage, deleteMessage, sendPhoto, get_readable_time, get_readable_file_size, progress_bar, update_warp_data, \
+                              get_button, get_data
 from bot.helpers.warp_plus import warp_run
 
 
@@ -18,10 +18,17 @@ task_run = 0
 
 
 def start(update, context):
+    warp_dict = get_data()
+    if warp_dict and warp_dict.get("private_mode"):
+        return sendMessage("<b>Upss...</b> private mode active! Contact the owner to make it public access!", context.bot, update.message)
     sendMessage("This is <b>Warp+ Injector</b>. Just send your id here...", context.bot, update.message)
 
 def stats(update, context):
-    if PRIVATE_MODE:
+    with open(".mode.txt", "r") as file:
+        file = file.read()
+        update_warp_data(OWNER_ID, "private_mode", file if file == "True" else False)
+    warp_dict = warp_data.get(OWNER_ID, False)
+    if warp_dict and warp_dict.get("private_mode"):
         return sendMessage("<b>Upss...</b> private mode active! Contact the owner to make it public access!", context.bot, update.message)
     last_commit = check_output(["git log -1 --date=short --pretty=format:'%cd\n<b>├ Commit Change:</b> %cr'"],
                                shell=True).decode() if ospath.exists('.git') else 'No UPSTREAM_REPO'
@@ -65,9 +72,21 @@ def restart(update, context):
         f.write(f"{restart_message.chat.id}\n{restart_message.message_id}\n")
     osexecl(executable, executable, "-m", "bot")
 
+def mode(update, context):
+    if update.message.from_user.id != OWNER_ID:
+        return sendMessage("<b>Upss...</b> You can't do this, owner only!", context.bot, update.message)
+    warp_dict = get_data()
+    if warp_dict and  warp_dict.get("private_mode"):
+        button = get_button("Disable", "public")
+        sendPhoto("Private Mode Is <b>Enabled</b>", context.bot, update.message, PIC_ON.split(), button)
+    else:
+        button = get_button("Enable", "private")
+        sendPhoto("Private Mode Is <b>DISABLE</b>", context.bot, update.message, PIC_OFF.split(), button)
+
 def warp_handler(update, context):
     global task_run
-    if PRIVATE_MODE:
+    warp_dict = get_data()
+    if warp_dict and warp_dict.get("private_mode"):
         return sendMessage("<b>Upss...</b> private mode active! Contact the owner to make it public access!", context.bot, update.message)
     msg = update.message.text
     user_id = update.message.from_user.id
@@ -96,11 +115,27 @@ def warp_handler(update, context):
 def stop_query(update, context):
     query = update.callback_query
     user_id = query.from_user.id
-    if user_id not in [int(query.data), OWNER_ID]: # Future for group support
+    data  = query.data.split()
+    message = query.message
+    if user_id not in [int(data[0]), OWNER_ID]: # Future for group support
         return query.answer(text="Not Your Task!", show_alert=True)
+    elif data[1] == "private":
+        update_warp_data(user_id, "private_mode", True)
+        button = get_button("Disable", "public")
+        query.answer(text="Change To Priveate Mode", show_alert=True)
+        editPhoto("Private Mode Is <b>ENABLE</b>", context.bot, message, PIC_ON.split(), button)
+        with open(".mode.txt", "w") as file:
+            file.write("True")
+    elif data[1] == "public":
+        update_warp_data(user_id, "private_mode", False)
+        query.answer(text="Change To Public Mode", show_alert=True)
+        button = get_button("Enable", "private")
+        editPhoto("Private Mode Is <b>DISBALE</b>", context.bot, message, PIC_OFF.split(), button)
+        with open(".mode.txt", "w") as file:
+            file.write("False")
     else:
+        update_warp_data(user_id, "run_warp", False)
         query.answer(text="Your Task Has Been Cancelled!", show_alert=True)
-        update_warp_data(user_id, 'run_warp', False)
 
 def main():
     if ospath.isfile(".restartmsg"):
@@ -118,6 +153,7 @@ def main():
     dispatcher.add_handler(CommandHandler(STATS_CMD, stats))
     dispatcher.add_handler(CommandHandler(RESTART_CMD, restart))
     dispatcher.add_handler(CommandHandler(LOG_CMD, send_log))
+    dispatcher.add_handler(CommandHandler(MODE_CMD, mode))
     dispatcher.add_handler(CallbackQueryHandler(stop_query, run_async=True))
     dispatcher.add_handler(MessageHandler(Filters.text, warp_handler))
     updater.start_polling(drop_pending_updates=True)
