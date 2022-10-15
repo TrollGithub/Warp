@@ -81,11 +81,8 @@ def mode(update, context):
 def warp_handler(update, context):
     global task_run
     user_id = update.message.from_user.id
-    warp_dict = get_data()
-    if warp_dict and warp_dict.get("private_mode") and user_id != OWNER_ID:
-        return sendMessage("<b>Upss...</b> private mode active! Contact the owner to make it public access!", context.bot, update.message)
     msg = update.message.text
-    warp_dict = warp_data.get(user_id, False)
+    warp_dict = get_data()
     if warp_dict and warp_dict.get("run_warp"):
             return sendMessage(f"Ups, you can only add 1 task!", context.bot, update.message)
     if TASK_MAX != -1:
@@ -93,6 +90,8 @@ def warp_handler(update, context):
             return sendMessage(f"Ups, bot task limit is {TASK_MAX}!", context.bot, update.message)
     if len(msg) != 36:
         return
+    if warp_dict and warp_dict.get("private_mode") and user_id != OWNER_ID:
+        return sendMessage("<b>Upss...</b> private mode active! Contact the owner to make it public access!", context.bot, update.message)
     if "-" not in msg:
         return sendMessage("Invalid ID!", context.bot, update.message)
     wrap_msg = sendMessage("<i>Cheching your ID, please wait...</i>", context.bot, update.message)
