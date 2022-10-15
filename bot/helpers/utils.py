@@ -58,7 +58,7 @@ def get_button(text, key, user_id=None):
 def get_data():
     with open(".mode.txt", "r") as file:
         file = file.read()
-        update_warp_data(OWNER_ID, "private_mode", file if file == "True" else False)
+        update_warp_data(OWNER_ID, "private_mode", True if file == "True" else False)
     return warp_data.get(OWNER_ID, False)
 
 def callender(dtime):
