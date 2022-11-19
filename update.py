@@ -4,9 +4,10 @@ from os import path as ospath, environ
 from subprocess import run as srun
 
 
-basicConfig(format="%(asctime)s - %(levelname)s - [%(filename)s: %(lineno)d] - %(message)s",
-                    handlers=[FileHandler('log.txt'), StreamHandler()],
-                    level=INFO)
+basicConfig(format="%(asctime)s: %(levelname)s - %(name)s - [%(filename)s: %(lineno)d] ~ %(message)s",
+            handlers=[FileHandler('log.txt'), StreamHandler()],
+            datefmt='%d-%b-%y %I:%M:%S %p',
+            level=INFO)
 
 load_dotenv('config.env', override=True)
 

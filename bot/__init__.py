@@ -13,15 +13,16 @@ if ospath.exists('log.txt'):
 if not ospath.exists('.mode.txt'):
     with open('.mode.txt', 'w') as f:
         f.write("True")
-    
+
 
 faulthandler_enable()
 
 setdefaulttimeout(600)
 
-basicConfig(format="%(asctime)s - [%(filename)s: %(lineno)d] - %(levelname)s - %(message)s",
-            handlers=[FileHandler("log.txt"), StreamHandler()],
-            level=INFO,)
+basicConfig(format="%(asctime)s: %(levelname)s - %(name)s - [%(filename)s: %(lineno)d] ~ %(message)s",
+            handlers=[FileHandler('log.txt'), StreamHandler()],
+            datefmt='%d-%b-%y %I:%M:%S %p',
+            level=INFO)
 
 LOGGER = getLogger(__name__)
 
