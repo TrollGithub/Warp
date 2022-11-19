@@ -19,7 +19,7 @@ faulthandler_enable()
 
 setdefaulttimeout(600)
 
-basicConfig(format="%(asctime)s: %(levelname)s - %(name)s - [%(filename)s: %(lineno)d] ~ %(message)s",
+basicConfig(format="%(asctime)s: [%(levelname)s: %(filename)s - %(lineno)d] ~ %(message)s",
             handlers=[FileHandler('log.txt'), StreamHandler()],
             datefmt='%d-%b-%y %I:%M:%S %p',
             level=INFO)
