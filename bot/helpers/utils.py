@@ -1,8 +1,7 @@
-from pytz import timezone as tzone
 from random import choice
 from telegram import InputMediaPhoto, InlineKeyboardButton, InlineKeyboardMarkup
 
-from bot import warp_data, LOGGER, PROG_UNFINISH, TIME_ZONE, PROG_FINISH, PROG_UNFINISH, OWNER_ID
+from bot import warp_data, LOGGER, PROG_UNFINISH, PROG_FINISH, PROG_UNFINISH, OWNER_ID
 
 
 SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
@@ -41,7 +40,7 @@ def get_readable_file_size(size_in_bytes) -> str:
     try:
         return f'{round(size_in_bytes, 2)}{SIZE_UNITS[index]}'
     except IndexError:
-        return 'File terlalu besar'
+        return 'File to big.'
 
 def progress_bar(percentage):
     if isinstance(percentage, str):
@@ -61,46 +60,37 @@ def get_data():
         update_warp_data(OWNER_ID, "private_mode", True if file == "True" else False)
     return warp_data.get(OWNER_ID, False)
 
-def callender(dtime):
-    dt_date = dtime.astimezone(tzone(TIME_ZONE)).strftime('%B %d, %Y')
-    dt_time = dtime.astimezone(tzone(TIME_ZONE)).strftime('%H:%M:%S')
-    return dt_date, dt_time
-
 def sendMessage(text, bot, message, reply_markup=None):
     try:
-        return bot.sendMessage(message.chat.id,
-                               text=text,
-                               parse_mode='HTML',
+        return bot.sendMessage(message.chat.id, text=text,
                                reply_to_message_id=message.message_id,
-                               reply_markup=reply_markup,
-                               disable_web_page_preview=True)
+                               reply_markup=reply_markup)
     except Exception as err:
         LOGGER.error(err)
+        return
 
 def sendPhoto(caption, bot, message, photo, reply_markup=None):
     try:
         return bot.sendPhoto(chat_id=message.chat.id,
-                             caption=caption,
-                             photo=choice(photo),
+                             caption=caption, photo=choice(photo),
                              reply_to_message_id=message.message_id,
-                             parse_mode='HTML',
                              reply_markup=reply_markup)
     except Exception as err:
         LOGGER.error(err)
+        return
 
 def editPhoto(caption, bot, message, photo, reply_markup=None):
     try:
-        return bot.editMessageMedia(chat_id=message.chat.id,
-                                    message_id=message.message_id,
-                                    media=InputMediaPhoto(media=choice(photo),
-                                                          caption=caption,
-                                                          parse_mode='HTML'),
-                                    reply_markup=reply_markup)
+        bot.editMessageMedia(chat_id=message.chat.id,
+                             message_id=message.message_id,
+                             media=InputMediaPhoto(media=choice(photo), caption=caption),
+                             reply_markup=reply_markup)
     except Exception as err:
         LOGGER.error(err)
+        return str(err)
 
 def deleteMessage(bot, message):
     try:
-        return bot.deleteMessage(chat_id=message.chat.id, message_id=message.message_id)
+        bot.deleteMessage(chat_id=message.chat.id, message_id=message.message_id)
     except Exception as err:
         LOGGER.error(err)

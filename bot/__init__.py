@@ -1,9 +1,10 @@
+from asyncio import get_event_loop
 from dotenv import load_dotenv
 from faulthandler import enable as faulthandler_enable
 from logging import getLogger, FileHandler, StreamHandler, basicConfig, INFO
 from os import environ, path as ospath
 from socket import setdefaulttimeout
-from telegram.ext import Updater as tgUpdater
+from telegram.ext import Updater as tgUpdater, Defaults
 from time import time
 
 if ospath.exists('log.txt'):
@@ -14,6 +15,7 @@ if not ospath.exists('.mode.txt'):
     with open('.mode.txt', 'w') as f:
         f.write("True")
 
+main_loop = get_event_loop()
 
 faulthandler_enable()
 
@@ -36,13 +38,17 @@ BOT_TOKEN = environ.get("BOT_TOKEN")
 if not BOT_TOKEN:
     LOGGER.info("BOT_TOKEN variable is missing! Exiting now")
     exit(1)
+
 OWNER_ID = int(environ.get("OWNER_ID"))
 if not OWNER_ID:
     LOGGER.info("OWNER_ID variable is missing! Exiting now")
     exit(1)
-CHANNEL_ID = (environ.get("CHANNEL_ID", ""))
+
+CHANNEL_ID = environ.get("CHANNEL_ID", "")
 CHANNEL_ID = int(CHANNEL_ID) if CHANNEL_ID else None
-SEND_LOG = environ.get("SEND_LOG", "false").lower() == "true"
+
+
+SEND_LOG = environ.get("SEND_LOG", "False").lower() == "true"
 HIDE_ID = environ.get("HIDE_ID", "False").lower() == "true"
 TIME_ZONE = environ.get("TIME_ZONE", "Asia/Jakarta")
 TIME_ZONE_TITLE = environ.get("TIME_ZONE_TITLE", "UTC+7")
@@ -60,8 +66,8 @@ RESTART_CMD = environ.get("RESTART_CMD", "restart")
 LOG_CMD = environ.get("LOG_CMD", "log")
 MODE_CMD = environ.get("MODE_CMD", "mode")
 
-updater = tgUpdater(token=BOT_TOKEN, request_kwargs={'read_timeout': 20, 'connect_timeout': 15})
+tgDefaults = Defaults(parse_mode='HTML', disable_web_page_preview=True, allow_sending_without_reply=True, run_async=True)
+updater = tgUpdater(token=BOT_TOKEN, defaults=tgDefaults, request_kwargs={'read_timeout': 20, 'connect_timeout': 15})
 bot = updater.bot
 dispatcher = updater.dispatcher
 job_queue = updater.job_queue
-botname = bot.username

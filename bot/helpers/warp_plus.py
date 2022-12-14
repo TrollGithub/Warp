@@ -4,12 +4,11 @@ import random
 import string
 import urllib.request
 
-from datetime import datetime as dt
-from pytz import UTC
+from pytz import timezone
 from time import time, sleep
 
 from bot import warp_data, COOLDOWN, LOGGER, HIDE_ID, CHANNEL_ID, PROG_FINISH, PROG_UNFINISH, SEND_LOG, PICS_WARP, TIME_ZONE_TITLE
-from bot.helpers.utils import callender, editPhoto, get_readable_time, get_readable_file_size, get_button
+from bot.helpers.utils import editPhoto, get_readable_time, get_readable_file_size, get_button
 
 
 LOGGER.info("WARP+ Cloudflare")
@@ -60,16 +59,16 @@ def warp_run(bot, user_id, warp_id, wrap_msg):
     bw = 0
     start_time = time()
     button = get_button("Stop", "stop", user_id)
+    warp_dict = warp_data.get(user_id, {})
     while True:
-        warp_dict = warp_data.get(user_id, False)
-        date_add, time_added = callender(dt.now(tz=UTC))
+        dt = wrap_msg.date.astimezone(timezone('TIME_ZONE'))
         msg_log = f"<b>├ Received:</b> {get_readable_file_size(bw)}\n"
         msg_log += f"<b>├ Success:</b> {g}\n"
         msg_log += f"<b>├ Failed:</b> {b}\n"
         msg_log += f"<b>├ Total:</b> {g + b}\n"
         msg_log += f"<b>├ Elapsed:</b> {get_readable_time(time() - start_time)}\n"
-        msg_log += f"<b>├ Time:</b> {time_added} ({TIME_ZONE_TITLE})\n"
-        msg_log += f"<b>└ Add:</b> {date_add}"
+        msg_log += f"<b>├ At:</b> {dt.strftime('%H:%M:%S')} ({TIME_ZONE_TITLE})\n"
+        msg_log += f"<b>└ Add:</b> {dt.strftime('%B %d, %Y')}"
         f = PROG_FINISH
         uf = PROG_UNFINISH
         prgss_bar = [f*2 + uf*8, f*4 + uf*6, f*6 + uf*4, f*8 + uf*2, f*10]

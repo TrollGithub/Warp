@@ -7,7 +7,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackQueryH
 from threading import Thread
 from time import time, sleep
 
-from bot import MODE_CMD, PIC_OFF, PIC_ON, bot, botStartTime, dispatcher, updater, warp_data, LOG_CMD, RESTART_CMD, LOGGER, OWNER_ID, PICS_WARP, COOLDOWN, \
+from bot import bot, botStartTime, dispatcher, updater, main_loop, MODE_CMD, PIC_OFF, PIC_ON, LOG_CMD, RESTART_CMD, LOGGER, OWNER_ID, PICS_WARP, COOLDOWN, \
                 TASK_MAX, START_CMD, STATS_CMD, PICS_STATS
 from bot.helpers.utils import editPhoto, sendMessage, deleteMessage, sendPhoto, get_readable_time, get_readable_file_size, progress_bar, update_warp_data, \
                               get_button, get_data
@@ -142,7 +142,7 @@ def main():
         bot.editMessageText(text=msg, chat_id=chat_id, message_id=msg_id)
         osremove(".restartmsg")
     else:
-        bot.sendMessage(OWNER_ID, msg, parse_mode='HTML')
+        bot.sendMessage(chat_id=OWNER_ID,text=msg)
     dispatcher.add_handler(CommandHandler(START_CMD, start))
     dispatcher.add_handler(CommandHandler(STATS_CMD, stats))
     dispatcher.add_handler(CommandHandler(RESTART_CMD, restart))
@@ -154,3 +154,4 @@ def main():
     LOGGER.info("Bot Started!")
 
 main()
+main_loop.run_forever()
