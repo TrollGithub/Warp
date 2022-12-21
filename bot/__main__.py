@@ -7,7 +7,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackQueryH
 from threading import Thread
 from time import time, sleep
 
-from bot import bot, botStartTime, dispatcher, updater, main_loop, MODE_CMD, PIC_OFF, PIC_ON, LOG_CMD, RESTART_CMD, LOGGER, OWNER_ID, PICS_WARP, COOLDOWN, \
+from bot import bot, botStartTime, dispatcher, updater, main_loop, warp_data, MODE_CMD, PIC_OFF, PIC_ON, LOG_CMD, RESTART_CMD, LOGGER, OWNER_ID, PICS_WARP, COOLDOWN, \
                 TASK_MAX, START_CMD, STATS_CMD, PICS_STATS
 from bot.helpers.utils import editPhoto, sendMessage, deleteMessage, sendPhoto, get_readable_time, get_readable_file_size, progress_bar, update_warp_data, \
                               get_button, get_data
@@ -83,7 +83,7 @@ def warp_handler(update, context):
     user_id = update.message.from_user.id
     msg = update.message.text
     warp_dict = get_data()
-    if warp_dict and warp_dict.get("run_warp"):
+    if warp_dict and warp_data.get(user_id, {}).get("run_warp"):
             return sendMessage(f"Ups, you can only add 1 task!", context.bot, update.message)
     if TASK_MAX != -1:
         if task_run == TASK_MAX:

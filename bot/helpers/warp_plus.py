@@ -7,7 +7,7 @@ import urllib.request
 from pytz import timezone
 from time import time, sleep
 
-from bot import warp_data, COOLDOWN, LOGGER, HIDE_ID, CHANNEL_ID, PROG_FINISH, PROG_UNFINISH, SEND_LOG, PICS_WARP, TIME_ZONE_TITLE
+from bot import warp_data, COOLDOWN, LOGGER, HIDE_ID, CHANNEL_ID, PROG_FINISH, PROG_UNFINISH, SEND_LOG, PICS_WARP, TIME_ZONE, TIME_ZONE_TITLE
 from bot.helpers.utils import editPhoto, get_readable_time, get_readable_file_size, get_button
 
 
@@ -61,7 +61,7 @@ def warp_run(bot, user_id, warp_id, wrap_msg):
     button = get_button("Stop", "stop", user_id)
     warp_dict = warp_data.get(user_id, {})
     while True:
-        dt = wrap_msg.date.astimezone(timezone('TIME_ZONE'))
+        dt = wrap_msg.date.astimezone(timezone(TIME_ZONE))
         msg_log = f"<b>├ Received:</b> {get_readable_file_size(bw)}\n"
         msg_log += f"<b>├ Success:</b> {g}\n"
         msg_log += f"<b>├ Failed:</b> {b}\n"
@@ -130,3 +130,4 @@ def warp_run(bot, user_id, warp_id, wrap_msg):
             caption += f"<b>└ Elapsed: </b>{get_readable_time(time() - start_time)}"
             editPhoto(caption, bot, wrap_msg, PICS_WARP)
             break
+    del warp_dict[user_id]
