@@ -148,7 +148,7 @@ def main():
     dispatcher.add_handler(CommandHandler(RESTART_CMD, restart))
     dispatcher.add_handler(CommandHandler(LOG_CMD, send_log))
     dispatcher.add_handler(CommandHandler(MODE_CMD, mode))
-    dispatcher.add_handler(CallbackQueryHandler(stop_query, run_async=True))
+    dispatcher.add_handler(CallbackQueryHandler(stop_query))
     dispatcher.add_handler(MessageHandler(Filters.text, warp_handler))
     updater.start_polling(drop_pending_updates=True)
     LOGGER.info("Bot Started!")
